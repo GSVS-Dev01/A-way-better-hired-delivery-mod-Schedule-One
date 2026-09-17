@@ -1,15 +1,15 @@
 # Current Handover
 
-## Active claim
+## Completed claim
 
 - Backlog: `VH-M3-002`
 - Owner: Codex
 - Branch: `feat/vh-m3-002-handler-configuration`
-- Status: `IN_PROGRESS`
+- Status: `DONE`
 
 ## Current outcome
 
-Build a Handler management panel reachable through the base clipboard selection flow. Populate live owned-vehicle and supported-property choices, refresh exact loading-bay choices when the property changes, surface contract validation messages, and expose apply/reconfigure plus manual load/hide requests without duplicating movement logic.
+The base clipboard's Packager panel is adapted only when every selected configuration belongs to an explicitly marked Handler. The normal bed field remains active; Packager station/route controls are replaced with owned-vehicle, supported-property, exact loading-bay, enabled-state, apply/reconfigure, refresh, load, hide/release, and validation controls. Vanilla Packagers always retain their original panel.
 
 ## Compatibility target
 
@@ -37,6 +37,11 @@ Game references remain outside this repository.
 - Assignment registry tests pass for duplicate vehicle rejection, atomic reassignment, old-index release, and defensive lookup copies.
 - Assignment resolution uses existing `VehicleManager.PlayerOwnedVehicles` and `Property.OwnedProperties` collections only; no vehicle spawn or instantiation path exists in source.
 - VH-M3-001 DLL SHA-256: `9E33B8DD72548FE898059B9491D9DE1F08595D27D35CF3C2258A0D535FF5ACDF`
+- Exact verification now includes the Handler clipboard Harmony target, Packager panel fields, Packager configuration owner, and vehicle labels used by the live option catalog.
+- VH-M3-002 builds with zero warnings and zero errors; DLL SHA-256: `7BA1A42ED384FCA028DE47CB2BBF8983BDE648C4D7E463614317E5B54A294345`
+- Static checks confirm the UI catalog reads existing owned vehicles/properties only and includes no vehicle creation API.
+- Land vehicles do not implement the base `IConfigurable` management contract in f13, so the specified safe fallback keeps configuration on the Handler panel rather than injecting a competing vehicle-side configurable.
+- `Load into bay` and `Hide / release bay` dispatch through `IHandlerManualBayController`; M4 supplies the physical movement implementation.
 - In-game Fixer dialogue, payment, networking, conversion, and appearance verification remains part of the isolated M5 runtime matrix.
 
 Commands:
@@ -48,6 +53,6 @@ Commands:
 
 ## Next work
 
-1. Map the existing `IConfigurable`, configuration, panel, selector, and clipboard APIs.
-2. Attach a Handler-specific configurable adapter without altering vanilla Packagers.
-3. Build and validate the live vehicle/property/bay controls and action requests.
+1. Claim `VH-M3-003` on a task-specific branch.
+2. Persist versioned assignment records under `UserData/VehicleHandlers.json` during normal saves.
+3. Rebind existing Handler, vehicle, property, and bay identities after load without spawning replacements.

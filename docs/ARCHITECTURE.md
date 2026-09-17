@@ -44,7 +44,9 @@ The Handler runtime samples the exact base `Employee.CanWork()` result through a
 
 ### Management UI
 
-The Handler configuration panel follows the delivery application's location/bay selection pattern. Vehicle-side management is added only if a safe `IConfigurable` adapter can be attached without replacing base vehicle interaction; otherwise all controls remain on the Handler panel.
+The Handler configuration panel reuses the base clipboard's `PackagerConfigPanel` only for configurations whose Packager owner is present in `HandlerEmployeeRegistry`. The vanilla bed control remains bound so normal home/locker setup is unchanged. Vanilla Packager station and route controls are hidden for that panel instance and replaced with runtime-built, base-styled selection controls for one existing owned vehicle, one supported owned property, and one exact loading-bay index. Property changes rebuild the bay choices, and assignment validation is shown in the panel.
+
+Land vehicles do not implement the base `IConfigurable` contract in 0.4.6f13. Adding a vehicle-side adapter would compete with base vehicle interaction and management selection, so the safe fallback required by the product specification keeps the same controls on the Handler panel. Manual load and hide buttons dispatch through `IHandlerManualBayController`; the default reports unavailable until M4 installs the authoritative movement implementation.
 
 ## Persistence
 

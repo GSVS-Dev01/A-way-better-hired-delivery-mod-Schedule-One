@@ -173,6 +173,13 @@ try {
     Assert-Method -TypeName "Il2CppScheduleOne.Management.ManagementInterface" -MethodName "GetConfigPanelPrefab" -ParameterTypes @(
         "Il2CppScheduleOne.Management.EConfigurableType"
     ) -ReturnType "Il2CppScheduleOne.Management.UI.ConfigPanel"
+    Assert-Method "Il2CppScheduleOne.UI.Management.PackagerConfigPanel" "BindInternal" @(
+        'Il2CppSystem.Collections.Generic.List`1<Il2CppScheduleOne.Management.EntityConfiguration>'
+    )
+    Assert-Property "Il2CppScheduleOne.UI.Management.PackagerConfigPanel" "BedUI" "Il2CppScheduleOne.UI.Management.ObjectFieldUI"
+    Assert-Property "Il2CppScheduleOne.UI.Management.PackagerConfigPanel" "StationsUI" "Il2CppScheduleOne.UI.Management.ObjectListFieldUI"
+    Assert-Property "Il2CppScheduleOne.UI.Management.PackagerConfigPanel" "RoutesUI" "Il2CppScheduleOne.UI.Management.RouteListFieldUI"
+    Assert-Property "Il2CppScheduleOne.Management.PackagerConfiguration" "packager" "Il2CppScheduleOne.Employees.Packager"
     Assert-Method "Il2CppScheduleOne.Delivery.DeliveryManager" "IsLoadingBayFree" @(
         "Il2CppScheduleOne.Property.Property", "System.Int32"
     )
@@ -198,6 +205,8 @@ try {
     Assert-Property "Il2CppScheduleOne.Property.Property" "OwnedProperties" 'Il2CppSystem.Collections.Generic.List`1<Il2CppScheduleOne.Property.Property>'
     Assert-Property "Il2CppScheduleOne.Vehicles.VehicleManager" "PlayerOwnedVehicles" 'Il2CppSystem.Collections.Generic.List`1<Il2CppScheduleOne.Vehicles.LandVehicle>'
     Assert-Property "Il2CppScheduleOne.Vehicles.LandVehicle" "IsPlayerOwned" "System.Boolean"
+    Assert-Property "Il2CppScheduleOne.Vehicles.LandVehicle" "VehicleName" "System.String"
+    Assert-Property "Il2CppScheduleOne.Vehicles.LandVehicle" "VehicleCode" "System.String"
     Assert-Property "Il2CppScheduleOne.Vehicles.LandVehicle" "Storage" "Il2CppScheduleOne.Storage.StorageEntity"
     Assert-Property "Il2CppScheduleOne.Vehicles.LandVehicle" "GUID" "Il2CppSystem.Guid"
     Assert-Property "Il2CppScheduleOne.Vehicles.LandVehicle" "IsOccupied" "System.Boolean"
