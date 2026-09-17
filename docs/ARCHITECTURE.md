@@ -12,6 +12,10 @@ Source-level identities, validation results, state transitions, reservation owne
 
 `HandlerEmployee` supplies the missing runtime worker for the existing `EEmployeeType.Handler` value. An existing employee prefab may be used as a construction donor, but role-specific behavior is replaced and the resulting worker is identified and displayed as Handler.
 
+In 0.4.6f13, `EmployeeManager.GetEmployeePrefab(EEmployeeType.Handler)` resolves to the game's `PackagerPrefab`. Vehicle Handlers therefore does not treat the enum value alone as proof that an employee is a driver. `HandlerEmployeeFactory` explicitly converts only the newly requested donor instance, attaches the injected `HandlerEmployee` marker, and registers its GUID/pointer with `HandlerEmployeeRegistry`. Unmarked base Handlers/Packagers retain vanilla behavior.
+
+The conversion keeps the original `Packager`/`Employee`/`NPC`/FishNet object as the networked and saved employee. Packaging, brick-press, and move-item role behaviours are disabled for marked instances. A Harmony reverse patch invokes the base `Employee.UpdateBehaviour` implementation so general employee lifecycle logic continues while `Packager.UpdateBehaviour` is bypassed. Handler-only configuration and state live in the managed runtime controller defined by the frozen contracts.
+
 ### Assignment registry
 
 `HandlerAssignmentRegistry` owns versioned assignments keyed by Handler GUID. Each assignment records vehicle GUID, destination property code/GUID, dock index, enabled state, manual hidden state, and recoverable trip state.
