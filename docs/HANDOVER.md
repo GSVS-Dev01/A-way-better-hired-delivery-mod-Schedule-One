@@ -2,14 +2,14 @@
 
 ## Active claim
 
-- Backlog: `VH-M1-001`, `VH-M1-002`
+- Backlog: `VH-M2-001`
 - Owner: Codex
-- Branch: `feat/vh-m1-001-api-verification`
-- Status: `DONE`
+- Branch: `feat/vh-m2-001-handler-employee`
+- Status: `IN_PROGRESS`
 
 ## Current outcome
 
-The exact f13 compatibility verifier now covers the hiring, employee lifecycle, management clipboard, property, vehicle, parking, loading-dock, delivery reservation, game-time, save/load, and NPC vehicle surfaces required by the planned implementation. Shared assignment, state, validation, reservation, recovery, and persistence contracts are frozen for M2, M3, and M4.
+Implement the genuine Handler runtime worker using the base employee prefab only as a construction donor. Preserve base networking and employee lifecycle components while replacing donor role behavior, applying Handler identity/appearance, and exposing the frozen Handler state/configuration boundary.
 
 ## Compatibility target
 
@@ -39,6 +39,6 @@ Commands:
 
 ## Next work
 
-1. Review and merge the repository-foundation draft PR.
-2. Review the stacked M1 contracts/API-verification draft PR.
-3. Begin M2, M3, and M4 on separate claimed branches using `docs/INTERNAL_CONTRACTS.md` as their shared boundary.
+1. Verify the exact IL2CPP component registration and employee prefab construction path.
+2. Implement Handler runtime identity, role-behaviour replacement, and recoloured appearance.
+3. Build against the f13 references and publish the stacked VH-M2-001 draft PR.
