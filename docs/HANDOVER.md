@@ -1,15 +1,15 @@
 # Current Handover
 
-## Completed claim
+## Active claim
 
-- Backlog: `VH-M3-003`
+- Backlog: `VH-M4-001`
 - Owner: Codex
-- Branch: `feat/vh-m3-003-handler-persistence`
-- Status: `DONE`
+- Branch: `feat/vh-m4-001-vehicle-reservations`
+- Status: `IN_PROGRESS`
 
 ## Current outcome
 
-Versioned assignment persistence is complete. `UserData/VehicleHandlers.json` stores save-slot-scoped records and is replaced atomically. Normal named and unnamed SaveManager paths write registry snapshots. Load start queues the active profile, and a bounded post-load rebinder resolves existing employee, vehicle, property, and bay identities without creating replacements.
+Integrate the canonical Handler reservation registry with the base `DeliveryManager.IsLoadingBayFree` result. Handler acquisition must first respect vanilla delivery availability, standard deliveries must see Handler reservations as unavailable, physical occupants remain authoritative, and release remains owner-only across all cleanup paths.
 
 ## Compatibility target
 
@@ -59,6 +59,6 @@ Commands:
 
 ## Next work
 
-1. Claim `VH-M4-001` on a task-specific branch.
-2. Combine Handler reservations with `DeliveryManager.IsLoadingBayFree` without displacing physical occupants.
-3. Enforce owner-only reservation release across completion and every lifecycle cleanup path.
+1. Add a reservation coordinator that resolves and acquires only after vanilla availability succeeds.
+2. Patch the delivery availability result to include Handler reservations without recursion.
+3. Verify idempotency, conflict rejection, owner-only release, and cleanup invariants.
