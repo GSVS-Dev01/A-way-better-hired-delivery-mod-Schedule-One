@@ -1,15 +1,15 @@
 # Current Handover
 
-## Completed claim
+## Active claim
 
-- Backlog: `VH-M4-001`
+- Backlog: `VH-M4-002`
 - Owner: Codex
-- Branch: `feat/vh-m4-001-vehicle-reservations`
-- Status: `DONE`
+- Branch: `feat/vh-m4-002-vehicle-movement`
+- Status: `IN_PROGRESS`
 
 ## Current outcome
 
-The server-authoritative reservation coordinator is complete. It structurally resolves the assignment, requires an initialized server, queries vanilla `DeliveryManager.IsLoadingBayFree`, and only then acquires the canonical atomic reservation. The delivery availability postfix preserves every vanilla `false` and changes a vanilla `true` only for standard delivery queries or another Handler's reservation.
+Implement the exact-vehicle movement coordinator: capture safe dock/parking state, reserve before detaching, release the source bay, hide and disable the same vehicle during a short game-time trip, wait on completion conflicts, register it through normal destination dock/parking APIs, and recover safely on failure or lifecycle shutdown.
 
 ## Compatibility target
 
@@ -64,6 +64,6 @@ Commands:
 
 ## Next work
 
-1. Claim `VH-M4-002` on a task-specific branch.
-2. Capture safe vehicle state, detach the exact vehicle, and advance the game-time trip without spawning.
-3. Recheck owner-scoped bay availability, align/register the same vehicle, recover failures, and release ownership.
+1. Capture runtime and persisted safe vehicle location state.
+2. Implement reserve/detach/hide/timer/wait/place transitions.
+3. Wire movement ticking and recovery into Handler lifecycle cleanup.
