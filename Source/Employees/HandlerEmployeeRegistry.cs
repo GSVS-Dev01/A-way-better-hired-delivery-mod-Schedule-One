@@ -107,6 +107,7 @@ namespace VehicleHandlers.Employees
 
         public void ResetConfiguration()
         {
+            HandlerRuntimeServices.MovementCoordinator.CancelAndRecover(this);
             ReleaseReservation();
             HandlerRuntimeServices.Assignments.RemoveByHandler(HandlerGuid);
             if (State != HandlerState.Unconfigured && State != HandlerState.Idle && State != HandlerState.Faulted)
@@ -176,6 +177,8 @@ namespace VehicleHandlers.Employees
                 return;
             }
 
+            HandlerRuntimeServices.MovementCoordinator.Tick(this);
+
             if (!CanWorkNow && (State == HandlerState.WaitingForVehicle || State == HandlerState.WaitingForDestinationBay))
             {
                 TransitionTo(HandlerState.Idle);
@@ -190,6 +193,7 @@ namespace VehicleHandlers.Employees
         public void Shutdown()
         {
             CanWorkNow = false;
+            HandlerRuntimeServices.MovementCoordinator.CancelAndRecover(this);
             ReleaseReservation();
             HandlerRuntimeServices.Assignments.RemoveByHandler(HandlerGuid);
             if (State != HandlerState.Faulted && State != HandlerState.Unconfigured)
@@ -230,6 +234,11 @@ namespace VehicleHandlers.Employees
                     TransitionTo(HandlerState.Faulted);
                     break;
             }
+        }
+
+        public void ApplyWorkValidation(HandlerValidationResult validation)
+        {
+            ApplyValidationState(validation);
         }
     }
 

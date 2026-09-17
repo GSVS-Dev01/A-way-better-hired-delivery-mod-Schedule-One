@@ -1,15 +1,15 @@
 # Current Handover
 
-## Active claim
+## Completed claim
 
 - Backlog: `VH-M4-002`
 - Owner: Codex
 - Branch: `feat/vh-m4-002-vehicle-movement`
-- Status: `IN_PROGRESS`
+- Status: `DONE`
 
 ## Current outcome
 
-Implement the exact-vehicle movement coordinator: capture safe dock/parking state, reserve before detaching, release the source bay, hide and disable the same vehicle during a short game-time trip, wait on completion conflicts, register it through normal destination dock/parking APIs, and recover safely on failure or lifecycle shutdown.
+The exact-vehicle movement coordinator is complete. On work ticks it resolves the assigned existing vehicle, ignores a vehicle already in its target bay, acquires the destination reservation, snapshots its source dock/parking state, releases the source, hides/disables the same object, advances a one-game-minute trip, waits on completion conflicts, then aligns and registers it through destination parking and dock occupant APIs.
 
 ## Compatibility target
 
@@ -53,6 +53,12 @@ Game references remain outside this repository.
 - Reservation invariant tests pass for idempotent acquisition, conflicting-owner rejection, lookup, owner-only release, and nested query-scope isolation.
 - Existing reset, unassignment, fire, destroy, leave/despawn, load-start, and mod-unload cleanup paths all release by Handler owner or clear the registry.
 - VH-M4-001 builds with zero warnings and zero errors; DLL SHA-256: `4760FC5BBD857162A350A890991F33E32399CC9D9A3B7C7F047FE2687E961147`
+- Movement preserves the same `LandVehicle` pointer/GUID and never invokes a spawn, instantiate-vehicle, or replacement path. Storage, ownership, colour, and base save identity are untouched.
+- Source `ParkingSpot` and `LoadingDock` occupants are cleared before hiding, leaving the input bay available while the game-time timer runs.
+- Completion uses owner-scoped availability, waits in `WaitingForDestinationBay` when blocked, and calls `AlignTo`, `ParkingSpot.SetOccupant`, `LoadingDock.SetOccupant`, and `RefreshOccupant` on success.
+- Firing, reset, unassignment, leave/despawn, registry clear, and mod unload cancel active sessions, restore the source spot/dock when still safe, restore visibility/physics, and release the reservation.
+- Exact verification now covers the parking-spot collection used by safe-state indexing.
+- VH-M4-002 builds with zero warnings and zero errors; DLL SHA-256: `3929D8763C7D52F2DEF8137BB45305624DE6397FF7AA92BD6FC4689D260E71D8`
 - In-game Fixer dialogue, payment, networking, conversion, and appearance verification remains part of the isolated M5 runtime matrix.
 
 Commands:
@@ -64,6 +70,6 @@ Commands:
 
 ## Next work
 
-1. Capture runtime and persisted safe vehicle location state.
-2. Implement reserve/detach/hide/timer/wait/place transitions.
-3. Wire movement ticking and recovery into Handler lifecycle cleanup.
+1. Claim `VH-M4-003` on a task-specific branch.
+2. Connect the existing clipboard action gateway to safe immediate load and hide operations.
+3. Refuse occupied, moving, conflicting, or non-authoritative requests without clearing unrelated occupants.

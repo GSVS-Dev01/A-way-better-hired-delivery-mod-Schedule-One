@@ -24,4 +24,5 @@ Format follows Keep a Changelog. The project uses semantic versioning after the 
 - Post-load GUID rebinding that reconverts only recorded Handler donors, preserves base home data, and drops stale records without spawning vehicles.
 - Server-only Handler loading-bay reservation coordinator layered on the vanilla delivery availability result.
 - Owner-scoped availability checks that block standard deliveries and competing Handlers without overriding physical dock occupants.
+- Timed exact-vehicle movement with source-bay release, hidden transit, destination waiting, normal dock registration, and lifecycle recovery.
 
