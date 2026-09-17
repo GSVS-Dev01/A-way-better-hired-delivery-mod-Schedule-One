@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes;
 using Il2CppScheduleOne.Employees;
 using MelonLoader;
 using VehicleHandlers.Contracts;
@@ -19,7 +20,7 @@ namespace VehicleHandlers.Employees
                 return true;
             }
 
-            runtime.Tick();
+            runtime.Tick(GetCanWork(__instance));
             try
             {
                 RunBaseEmployeeBehaviour(__instance);
@@ -41,7 +42,19 @@ namespace VehicleHandlers.Employees
         {
             if (HandlerEmployeeRegistry.TryGet(__instance, out HandlerEmployeeRuntime runtime))
             {
-                runtime.Tick();
+                runtime.Tick(GetCanWork(__instance));
+            }
+        }
+
+        private static bool GetCanWork(Employee instance)
+        {
+            try
+            {
+                return RunBaseCanWork(instance);
+            }
+            catch
+            {
+                return !instance.Fired && instance.PaidForToday && instance.AssignedProperty != null && instance.GetHome() != null;
             }
         }
 
@@ -49,6 +62,14 @@ namespace VehicleHandlers.Employees
         [HarmonyPatch(typeof(Employee), "UpdateBehaviour", new Type[] { })]
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void RunBaseEmployeeBehaviour(Employee instance)
+        {
+            throw new NotSupportedException("Harmony reverse patch was not applied.");
+        }
+
+        [HarmonyReversePatch(HarmonyReversePatchType.Original)]
+        [HarmonyPatch(typeof(Employee), "CanWork", new Type[] { })]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static bool RunBaseCanWork(Employee instance)
         {
             throw new NotSupportedException("Harmony reverse patch was not applied.");
         }
@@ -99,11 +120,44 @@ namespace VehicleHandlers.Employees
     [HarmonyPatch(typeof(Packager), "UnassignProperty", new System.Type[] { })]
     internal static class HandlerUnassignPropertyPatch
     {
+        private static void Prefix(Packager __instance)
+        {
+            if (HandlerEmployeeRegistry.TryGet(__instance, out HandlerEmployeeRuntime runtime))
+            {
+                runtime.ReleaseReservation();
+            }
+        }
+
         private static void Postfix(Packager __instance)
         {
             if (HandlerEmployeeRegistry.TryGet(__instance, out HandlerEmployeeRuntime runtime))
             {
                 runtime.ResetConfiguration();
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Packager), "Fire", new System.Type[] { })]
+    internal static class HandlerFirePatch
+    {
+        private static void Prefix(Packager __instance)
+        {
+            if (HandlerEmployeeRegistry.TryGet(__instance, out HandlerEmployeeRuntime runtime))
+            {
+                runtime.Shutdown();
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Employee), "LeavePropertyAndDespawn", new System.Type[] { })]
+    internal static class HandlerLeaveAndDespawnPatch
+    {
+        private static void Prefix(Employee __instance)
+        {
+            Packager donor = (__instance as Il2CppObjectBase)?.TryCast<Packager>();
+            if (donor != null && HandlerEmployeeRegistry.TryGet(donor, out HandlerEmployeeRuntime runtime))
+            {
+                runtime.Shutdown();
             }
         }
     }

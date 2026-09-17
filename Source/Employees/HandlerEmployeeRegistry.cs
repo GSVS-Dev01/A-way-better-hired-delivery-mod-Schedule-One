@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Il2CppScheduleOne.Employees;
 using VehicleHandlers.Contracts;
+using VehicleHandlers.Runtime;
 
 namespace VehicleHandlers.Employees
 {
@@ -25,6 +26,8 @@ namespace VehicleHandlers.Employees
 
         public HandlerState State { get; private set; } = HandlerState.Unconfigured;
 
+        public bool CanWorkNow { get; private set; }
+
         public string HandlerGuid => Employee.GUID.ToString().ToUpperInvariant();
 
         public void ApplyConfiguration(HandlerConfiguration configuration)
@@ -36,6 +39,7 @@ namespace VehicleHandlers.Employees
 
         public void ResetConfiguration()
         {
+            ReleaseReservation();
             if (State != HandlerState.Unconfigured && State != HandlerState.Idle && State != HandlerState.Faulted)
             {
                 TransitionTo(HandlerState.Faulted);
@@ -44,6 +48,36 @@ namespace VehicleHandlers.Employees
             Assignment = null;
             Configuration = new HandlerConfiguration();
             TransitionTo(HandlerState.Unconfigured);
+        }
+
+        public HandlerValidationResult TryBeginWork(IHandlerAssignmentValidator validator)
+        {
+            if (Employee.Fired || !CanWorkNow)
+            {
+                return HandlerValidationResult.Failure(
+                    HandlerValidationCode.HandlerUnavailable,
+                    "The Handler is off duty, unpaid, fired, or otherwise unavailable.");
+            }
+
+            if (Assignment == null)
+            {
+                return HandlerValidationResult.Failure(
+                    HandlerValidationCode.MissingHandler,
+                    "The Handler has no vehicle delivery assignment.");
+            }
+
+            if (!Assignment.Enabled)
+            {
+                return HandlerValidationResult.Failure(
+                    HandlerValidationCode.AssignmentDisabled,
+                    "The Handler assignment is disabled.");
+            }
+
+            HandlerValidationResult validation = validator == null
+                ? HandlerValidationResult.Success()
+                : validator.Validate(Assignment);
+            ApplyValidationState(validation);
+            return validation;
         }
 
         public void TransitionTo(HandlerState next)
@@ -62,9 +96,70 @@ namespace VehicleHandlers.Employees
             }
         }
 
-        public void Tick()
+        public void Tick(bool canWorkNow)
         {
+            CanWorkNow = canWorkNow && !Employee.Fired;
             HandlerEmployeeRegistry.SuppressDonorRole(Employee);
+
+            if (Employee.Fired)
+            {
+                Shutdown();
+                return;
+            }
+
+            if (!CanWorkNow && (State == HandlerState.WaitingForVehicle || State == HandlerState.WaitingForDestinationBay))
+            {
+                TransitionTo(HandlerState.Idle);
+            }
+        }
+
+        public void ReleaseReservation()
+        {
+            HandlerRuntimeServices.Reservations.ReleaseByHandler(HandlerGuid);
+        }
+
+        public void Shutdown()
+        {
+            CanWorkNow = false;
+            ReleaseReservation();
+            if (State != HandlerState.Faulted && State != HandlerState.Unconfigured)
+            {
+                if (HandlerStateMachine.CanTransition(State, HandlerState.Faulted))
+                {
+                    TransitionTo(HandlerState.Faulted);
+                }
+            }
+        }
+
+        private void ApplyValidationState(HandlerValidationResult validation)
+        {
+            if (validation.IsValid)
+            {
+                TransitionTo(HandlerState.WaitingForDestinationBay);
+                return;
+            }
+
+            switch (validation.Code)
+            {
+                case HandlerValidationCode.MissingVehicle:
+                case HandlerValidationCode.VehicleNotOwned:
+                case HandlerValidationCode.VehicleOccupied:
+                case HandlerValidationCode.VehicleAlreadyAssigned:
+                    TransitionTo(HandlerState.WaitingForVehicle);
+                    break;
+                case HandlerValidationCode.DestinationBayOccupied:
+                case HandlerValidationCode.DestinationBayReserved:
+                    TransitionTo(HandlerState.WaitingForDestinationBay);
+                    break;
+                case HandlerValidationCode.HandlerUnavailable:
+                case HandlerValidationCode.AssignmentDisabled:
+                    TransitionTo(HandlerState.Idle);
+                    break;
+                default:
+                    ReleaseReservation();
+                    TransitionTo(HandlerState.Faulted);
+                    break;
+            }
         }
     }
 
@@ -148,7 +243,11 @@ namespace VehicleHandlers.Employees
                 }
 
                 EmployeeByMarker.Remove(marker.Pointer);
-                RuntimeByEmployee.Remove(employeePointer);
+                if (RuntimeByEmployee.TryGetValue(employeePointer, out HandlerEmployeeRuntime runtime))
+                {
+                    runtime.Shutdown();
+                    RuntimeByEmployee.Remove(employeePointer);
+                }
             }
         }
 
@@ -156,6 +255,11 @@ namespace VehicleHandlers.Employees
         {
             lock (Sync)
             {
+                foreach (HandlerEmployeeRuntime runtime in RuntimeByEmployee.Values)
+                {
+                    runtime.Shutdown();
+                }
+
                 EmployeeByMarker.Clear();
                 RuntimeByEmployee.Clear();
             }
