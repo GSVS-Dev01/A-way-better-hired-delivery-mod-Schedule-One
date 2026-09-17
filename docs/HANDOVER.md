@@ -2,14 +2,14 @@
 
 ## Active claim
 
-- Backlog: `VH-M0-001`, `VH-M0-002`
+- Backlog: `VH-M1-001`, `VH-M1-002`
 - Owner: Codex
-- Branch: `feat/vh-m0-001-project-scaffold`
-- Status: `VERIFYING`
+- Branch: `feat/vh-m1-001-api-verification`
+- Status: `DONE`
 
 ## Current outcome
 
-The public-repository-safe foundation, canonical project documents, IL2CPP project scaffold, and exact API verification entry point are complete and ready for review.
+The exact f13 compatibility verifier now covers the hiring, employee lifecycle, management clipboard, property, vehicle, parking, loading-dock, delivery reservation, game-time, save/load, and NPC vehicle surfaces required by the planned implementation. Shared assignment, state, validation, reservation, recovery, and persistence contracts are frozen for M2, M3, and M4.
 
 ## Compatibility target
 
@@ -24,9 +24,11 @@ Game references remain outside this repository.
 
 - Public repository cloned successfully and confirmed empty.
 - Compatibility hash confirmed from the existing out-of-tree reference set.
-- Static API verification passed for the initial Handler, employee, delivery, dock, property, vehicle, parking, NPC, and save signatures.
+- Exact API verification passed against the target assembly hash.
+- Return types are checked in addition to exact type, method, property, and parameter identities.
 - Release build completed with zero warnings and zero errors.
-- Initial scaffold DLL SHA-256: `BAB430DDDCD2E690A085838B42293662F0BB6E70FF1A8AC4E560E2DB49F35655`
+- M1 verification DLL SHA-256: `0E599969A51E1620615EDA19D003ABA3B213617987A42CE704B356C55E83C93B`
+- Runtime gameplay verification remains deferred until the implementation milestones.
 
 Commands:
 
@@ -37,6 +39,6 @@ Commands:
 
 ## Next work
 
-1. Review and merge the foundation branch.
-2. Claim `VH-M1-001` on its own branch after the foundation is publicly visible.
-3. Freeze the cross-worker contracts before parallel M2/M3/M4 implementation.
+1. Review and merge the repository-foundation draft PR.
+2. Review the stacked M1 contracts/API-verification draft PR.
+3. Begin M2, M3, and M4 on separate claimed branches using `docs/INTERNAL_CONTRACTS.md` as their shared boundary.
