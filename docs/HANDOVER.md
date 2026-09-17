@@ -2,14 +2,14 @@
 
 ## Active claim
 
-- Backlog: `VH-M2-001`
+- Backlog: `VH-M2-002`
 - Owner: Codex
-- Branch: `feat/vh-m2-001-handler-employee`
-- Status: `DONE`
+- Branch: `feat/vh-m2-002-handler-hiring`
+- Status: `IN_PROGRESS`
 
 ## Current outcome
 
-VH-M2-001 now provides an injected `HandlerEmployee` marker, explicit donor conversion factory, managed Handler runtime/state controller, guarded role-behaviour replacement, and per-instance teal appearance recolouring. Conversion preserves the original networked/saved employee object and does not alter unmarked base Handlers/Packagers.
+Add an explicit Vehicle Handler/Driver option to the Fixer employee flow while preserving every vanilla role. Route that selection through the normal Handler/Packager fee, property-capacity, random appearance, employee creation, and networking path, then convert only the resulting marked donor instance.
 
 ## Compatibility target
 
@@ -41,6 +41,6 @@ Commands:
 
 ## Next work
 
-1. Review the stacked VH-M2-001 draft PR.
-2. Claim VH-M2-002 and wire the explicit Handler/Driver selection into the base Fixer hiring flow.
-3. Ensure only that new selection invokes `HandlerEmployeeFactory.ConvertDonor`; ordinary base Handler/Packager hires must remain unmarked.
+1. Add a distinct dynamic Fixer choice without replacing the vanilla Packager choice.
+2. Carry an internal hire marker through the existing FishNet employee RPC without persisting it as the employee ID.
+3. Convert only the marked `CreateEmployee_Server` result and verify normal Packager creation remains unchanged.
