@@ -6,6 +6,8 @@ The server is authoritative for assignments, work state, bay reservations, and p
 
 ## Components
 
+Source-level identities, validation results, state transitions, reservation ownership, movement ordering, and persistence lifecycle are frozen in [INTERNAL_CONTRACTS.md](INTERNAL_CONTRACTS.md). M2, M3, and M4 implementations must use those contracts rather than creating parallel models.
+
 ### Handler employee
 
 `HandlerEmployee` supplies the missing runtime worker for the existing `EEmployeeType.Handler` value. An existing employee prefab may be used as a construction donor, but role-specific behavior is replaced and the resulting worker is identified and displayed as Handler.
