@@ -76,6 +76,14 @@ namespace VehicleHandlers.Contracts
             }
         }
 
+        public bool TryGet(HandlerBayKey bay, out HandlerReservation reservation)
+        {
+            lock (sync)
+            {
+                return reservationsByBay.TryGetValue(bay, out reservation);
+            }
+        }
+
         public bool IsReservedByOther(HandlerBayKey bay, string handlerGuid)
         {
             string normalizedHandlerGuid = NormalizeGuid(handlerGuid);

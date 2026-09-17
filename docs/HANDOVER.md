@@ -1,15 +1,15 @@
 # Current Handover
 
-## Active claim
+## Completed claim
 
 - Backlog: `VH-M4-001`
 - Owner: Codex
 - Branch: `feat/vh-m4-001-vehicle-reservations`
-- Status: `IN_PROGRESS`
+- Status: `DONE`
 
 ## Current outcome
 
-Integrate the canonical Handler reservation registry with the base `DeliveryManager.IsLoadingBayFree` result. Handler acquisition must first respect vanilla delivery availability, standard deliveries must see Handler reservations as unavailable, physical occupants remain authoritative, and release remains owner-only across all cleanup paths.
+The server-authoritative reservation coordinator is complete. It structurally resolves the assignment, requires an initialized server, queries vanilla `DeliveryManager.IsLoadingBayFree`, and only then acquires the canonical atomic reservation. The delivery availability postfix preserves every vanilla `false` and changes a vanilla `true` only for standard delivery queries or another Handler's reservation.
 
 ## Compatibility target
 
@@ -48,6 +48,11 @@ Game references remain outside this repository.
 - Interrupted movement state is normalized to idle/hidden with zero remaining timer and no restored reservation. Missing runtime identities retry for 600 post-load frames, then fail closed and release ownership.
 - Exact verification now covers all persistence Harmony targets, active save identity, save-slot identity, and the employee registry used for GUID rebinding.
 - VH-M3-003 builds with zero warnings and zero errors; DLL SHA-256: `E3F9A9B95A348E00AAA502712C044A06A3861E32D4E2BCC9AD45CB88AFB78E33`
+- Handler reservation queries carry a thread-local owner scope, allowing an owning Handler to recheck its own bay while standard deliveries and other Handlers see it as unavailable. Nested scopes restore correctly and do not leak identity.
+- Physical dock occupancy remains controlled by the original `IsLoadingBayFree` result; the postfix never turns `false` into `true` and never clears an occupant.
+- Reservation invariant tests pass for idempotent acquisition, conflicting-owner rejection, lookup, owner-only release, and nested query-scope isolation.
+- Existing reset, unassignment, fire, destroy, leave/despawn, load-start, and mod-unload cleanup paths all release by Handler owner or clear the registry.
+- VH-M4-001 builds with zero warnings and zero errors; DLL SHA-256: `4760FC5BBD857162A350A890991F33E32399CC9D9A3B7C7F047FE2687E961147`
 - In-game Fixer dialogue, payment, networking, conversion, and appearance verification remains part of the isolated M5 runtime matrix.
 
 Commands:
@@ -59,6 +64,6 @@ Commands:
 
 ## Next work
 
-1. Add a reservation coordinator that resolves and acquires only after vanilla availability succeeds.
-2. Patch the delivery availability result to include Handler reservations without recursion.
-3. Verify idempotency, conflict rejection, owner-only release, and cleanup invariants.
+1. Claim `VH-M4-002` on a task-specific branch.
+2. Capture safe vehicle state, detach the exact vehicle, and advance the game-time trip without spawning.
+3. Recheck owner-scoped bay availability, align/register the same vehicle, recover failures, and release ownership.

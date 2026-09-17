@@ -36,7 +36,9 @@ The Handler runtime samples the exact base `Employee.CanWork()` result through a
 
 ### Reservation registry
 
-`HandlerReservationRegistry` owns destination reservations keyed by stable property and dock identity. Reservation acquisition and release are atomic and owner-specific. A Harmony postfix on `DeliveryManager.IsLoadingBayFree(Property, int)` combines vanilla availability with Handler reservations.
+`HandlerReservationRegistry` owns destination reservations keyed by stable property and dock identity. Reservation acquisition and release are atomic and owner-specific. `HandlerReservationCoordinator` requires an initialized FishNet server, resolves an existing assignment, asks vanilla `DeliveryManager.IsLoadingBayFree(Property, int)`, and only then acquires the registry entry.
+
+A Harmony postfix combines vanilla availability with Handler reservations. It never changes a vanilla `false`, so physical occupants and standard-delivery conflicts remain authoritative. A thread-local query scope lets the owning Handler recheck its already-reserved bay; standard delivery calls carry no owner and other Handler calls carry a different owner, so both receive `false`. Scope nesting restores the previous identity and cannot leak a Handler into later delivery checks.
 
 ### Movement coordinator
 
