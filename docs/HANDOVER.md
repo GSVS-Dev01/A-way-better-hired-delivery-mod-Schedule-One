@@ -2,14 +2,14 @@
 
 ## Active claim
 
-- Backlog: `VH-M0-001`, `VH-M0-002`
+- Backlog: `VH-M1-001`, `VH-M1-002`
 - Owner: Codex
-- Branch: `feat/vh-m0-001-project-scaffold`
-- Status: `VERIFYING`
+- Branch: `feat/vh-m1-001-api-verification`
+- Status: `IN_PROGRESS`
 
 ## Current outcome
 
-The public-repository-safe foundation, canonical project documents, IL2CPP project scaffold, and exact API verification entry point are complete and ready for review.
+Expand the exact f13 compatibility verifier and freeze the source-level assignment, state, validation, reservation, and persistence contracts required by the parallel employee, UI, and movement workstreams.
 
 ## Compatibility target
 
@@ -37,6 +37,6 @@ Commands:
 
 ## Next work
 
-1. Review and merge the foundation branch.
-2. Claim `VH-M1-001` on its own branch after the foundation is publicly visible.
-3. Freeze the cross-worker contracts before parallel M2/M3/M4 implementation.
+1. Expand API verification across employee creation, clipboard configuration, vehicle ownership/parking, dock occupancy, delivery availability, save/load, and NPC vehicle interaction.
+2. Add the frozen contracts and pure reservation invariants.
+3. Verify and publish the stacked M1 branch before parallel M2/M3/M4 implementation.
