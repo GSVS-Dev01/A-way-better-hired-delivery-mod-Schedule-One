@@ -2,14 +2,14 @@
 
 ## Completed claim
 
-- Backlog: `VH-M3-002`
+- Backlog: `VH-M3-003`
 - Owner: Codex
-- Branch: `feat/vh-m3-002-handler-configuration`
+- Branch: `feat/vh-m3-003-handler-persistence`
 - Status: `DONE`
 
 ## Current outcome
 
-The base clipboard's Packager panel is adapted only when every selected configuration belongs to an explicitly marked Handler. The normal bed field remains active; Packager station/route controls are replaced with owned-vehicle, supported-property, exact loading-bay, enabled-state, apply/reconfigure, refresh, load, hide/release, and validation controls. Vanilla Packagers always retain their original panel.
+Versioned assignment persistence is complete. `UserData/VehicleHandlers.json` stores save-slot-scoped records and is replaced atomically. Normal named and unnamed SaveManager paths write registry snapshots. Load start queues the active profile, and a bounded post-load rebinder resolves existing employee, vehicle, property, and bay identities without creating replacements.
 
 ## Compatibility target
 
@@ -42,6 +42,12 @@ Game references remain outside this repository.
 - Static checks confirm the UI catalog reads existing owned vehicles/properties only and includes no vehicle creation API.
 - Land vehicles do not implement the base `IConfigurable` management contract in f13, so the specified safe fallback keeps configuration on the Handler panel rather than injecting a competing vehicle-side configurable.
 - `Load into bay` and `Hide / release bay` dispatch through `IHandlerManualBayController`; M4 supplies the physical movement implementation.
+- A valid sidecar Handler GUID is the reload discriminator: only that existing Packager donor is reconverted, while unlisted vanilla Packagers remain untouched. Reload conversion preserves the donor's base bed/home configuration.
+- Registration validation is structural, so transient vehicle occupancy or bay occupancy does not erase a valid saved assignment; operational validation still moves the Handler into waiting states.
+- Persistence round-trip tests pass for schema version, save-profile scope, exact assignment fields, and atomic temporary-file replacement.
+- Interrupted movement state is normalized to idle/hidden with zero remaining timer and no restored reservation. Missing runtime identities retry for 600 post-load frames, then fail closed and release ownership.
+- Exact verification now covers all persistence Harmony targets, active save identity, save-slot identity, and the employee registry used for GUID rebinding.
+- VH-M3-003 builds with zero warnings and zero errors; DLL SHA-256: `E3F9A9B95A348E00AAA502712C044A06A3861E32D4E2BCC9AD45CB88AFB78E33`
 - In-game Fixer dialogue, payment, networking, conversion, and appearance verification remains part of the isolated M5 runtime matrix.
 
 Commands:
@@ -53,6 +59,6 @@ Commands:
 
 ## Next work
 
-1. Claim `VH-M3-003` on a task-specific branch.
-2. Persist versioned assignment records under `UserData/VehicleHandlers.json` during normal saves.
-3. Rebind existing Handler, vehicle, property, and bay identities after load without spawning replacements.
+1. Claim `VH-M4-001` on a task-specific branch.
+2. Combine Handler reservations with `DeliveryManager.IsLoadingBayFree` without displacing physical occupants.
+3. Enforce owner-only reservation release across completion and every lifecycle cleanup path.

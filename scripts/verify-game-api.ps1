@@ -97,6 +97,7 @@ try {
         "Il2CppScheduleOne.Employees.EEmployeeType"
     )
     Assert-Property "Il2CppScheduleOne.Employees.EmployeeManager" "PackagerPrefab" "Il2CppScheduleOne.Employees.Packager"
+    Assert-Property "Il2CppScheduleOne.Employees.EmployeeManager" "AllEmployees" 'Il2CppSystem.Collections.Generic.List`1<Il2CppScheduleOne.Employees.Employee>'
     Assert-Property "Il2CppScheduleOne.Employees.Employee" "Type" "Il2CppScheduleOne.Employees.EEmployeeType"
     Assert-Property "Il2CppScheduleOne.Employees.Employee" "EmployeeType" "Il2CppScheduleOne.Employees.EEmployeeType"
     Assert-Property "Il2CppScheduleOne.Employees.Employee" "SigningFee" "System.Single"
@@ -239,7 +240,14 @@ try {
     Assert-Method -TypeName "Il2CppScheduleOne.GameTime.TimeManager" -MethodName "GetTotalMinSum" -ReturnType "System.Int32"
     Assert-Property "Il2CppScheduleOne.Persistence.LoadManager" "IsGameLoaded" "System.Boolean"
     Assert-Property "Il2CppScheduleOne.Persistence.LoadManager" "IsLoading" "System.Boolean"
+    Assert-Property "Il2CppScheduleOne.Persistence.LoadManager" "ActiveSaveInfo" "Il2CppScheduleOne.Persistence.SaveInfo"
     Assert-Property "Il2CppScheduleOne.Persistence.LoadManager" "onLoadComplete" "UnityEngine.Events.UnityEvent"
+    Assert-Method "Il2CppScheduleOne.Persistence.LoadManager" "StartGame" @(
+        "Il2CppScheduleOne.Persistence.SaveInfo", "System.Boolean", "System.Boolean"
+    )
+    Assert-Method "Il2CppScheduleOne.Persistence.LoadManager" "Update"
+    Assert-Method "Il2CppScheduleOne.Persistence.LoadManager" "CleanUp"
+    Assert-Property "Il2CppScheduleOne.Persistence.SaveInfo" "SaveSlotNumber" "System.Int32"
     Assert-Method "Il2CppScheduleOne.Persistence.SaveManager" "Save"
     Assert-Method "Il2CppScheduleOne.Persistence.SaveManager" "Save" @("System.String")
 

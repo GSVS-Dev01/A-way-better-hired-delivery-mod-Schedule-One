@@ -7,7 +7,7 @@ namespace VehicleHandlers.Employees
 {
     public static class HandlerEmployeeFactory
     {
-        public static HandlerEmployee ConvertDonor(Packager donor)
+        public static HandlerEmployee ConvertDonor(Packager donor, bool resetDonorRoleConfiguration = true)
         {
             if (donor == null)
             {
@@ -27,7 +27,10 @@ namespace VehicleHandlers.Employees
                 return existing;
             }
 
-            ResetDonorConfiguration(donor);
+            if (resetDonorRoleConfiguration)
+            {
+                ResetDonorConfiguration(donor);
+            }
             HandlerEmployee marker = donor.gameObject.AddComponent<HandlerEmployee>();
             HandlerEmployeeRegistry.Register(marker, donor);
             HandlerAppearance.Apply(donor);

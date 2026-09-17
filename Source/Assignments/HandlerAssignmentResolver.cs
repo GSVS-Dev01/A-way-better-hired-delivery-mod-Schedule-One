@@ -44,10 +44,23 @@ namespace VehicleHandlers.Assignments
 
         public HandlerValidationResult Validate(HandlerAssignment assignment)
         {
-            return TryResolve(assignment, out _);
+            return TryResolve(assignment, true, out _);
+        }
+
+        public HandlerValidationResult ValidateForRegistration(HandlerAssignment assignment)
+        {
+            return TryResolve(assignment, false, out _);
         }
 
         public HandlerValidationResult TryResolve(HandlerAssignment assignment, out ResolvedHandlerAssignment resolved)
+        {
+            return TryResolve(assignment, true, out resolved);
+        }
+
+        private HandlerValidationResult TryResolve(
+            HandlerAssignment assignment,
+            bool requireAvailability,
+            out ResolvedHandlerAssignment resolved)
         {
             resolved = null;
             if (assignment == null)
@@ -66,7 +79,7 @@ namespace VehicleHandlers.Assignments
                 return HandlerValidationResult.Failure(HandlerValidationCode.VehicleNotOwned, "The assigned vehicle is not player-owned.");
             }
 
-            if (vehicle.IsOccupied)
+            if (requireAvailability && vehicle.IsOccupied)
             {
                 return HandlerValidationResult.Failure(HandlerValidationCode.VehicleOccupied, "The assigned vehicle is occupied.");
             }
@@ -115,7 +128,7 @@ namespace VehicleHandlers.Assignments
                 return HandlerValidationResult.Failure(HandlerValidationCode.InvalidDestinationBay, "The selected loading bay is unavailable.");
             }
 
-            if (IsOccupiedByOther(dock, vehicle))
+            if (requireAvailability && IsOccupiedByOther(dock, vehicle))
             {
                 return HandlerValidationResult.Failure(
                     HandlerValidationCode.DestinationBayOccupied,
@@ -123,7 +136,7 @@ namespace VehicleHandlers.Assignments
             }
 
             HandlerBayKey bay = new HandlerBayKey(property.PropertyCode, assignment.DestinationDockIndex);
-            if (reservations.IsReservedByOther(bay, assignment.HandlerGuid))
+            if (requireAvailability && reservations.IsReservedByOther(bay, assignment.HandlerGuid))
             {
                 return HandlerValidationResult.Failure(
                     HandlerValidationCode.DestinationBayReserved,

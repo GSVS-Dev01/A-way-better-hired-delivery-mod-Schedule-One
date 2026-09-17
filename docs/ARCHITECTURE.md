@@ -50,7 +50,9 @@ Land vehicles do not implement the base `IConfigurable` contract in 0.4.6f13. Ad
 
 ## Persistence
 
-Base employee and vehicle data remains owned by the game. Mod-only assignment and in-progress state is stored in `UserData/VehicleHandlers.json`. Loading resolves GUIDs against existing runtime objects and never spawns a missing vehicle.
+Base employee and vehicle data remains owned by the game. Mod-only assignment and in-progress state is stored in the schema-versioned `UserData/VehicleHandlers.json`. One document contains profiles keyed by save-slot identity; fallback save names are hashed so local paths or player-entered names are not persisted as keys. Writes use a same-directory temporary file followed by replacement, and an unreadable source file is copied to a timestamped backup before fresh data replaces it.
+
+`LoadManager.StartGame` clears transient assignment/reservation state and queues the selected profile. After the base game reports loaded, a bounded rebinder searches `EmployeeManager.AllEmployees`, `VehicleManager.PlayerOwnedVehicles`, and owned properties by the saved identities. The sidecar Handler GUID is the reload discriminator: only the matching Packager donor is reconverted, with donor role reset disabled so normal bed/home data survives. Interrupted movement timers and reservations are not resumed blindly; state returns to idle or explicitly hidden, then M4 can recover the same physical vehicle from its saved safe snapshot. Missing or invalid identities are discarded without spawning replacements or retaining bay ownership.
 
 ## Failure handling
 

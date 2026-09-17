@@ -54,7 +54,7 @@ namespace VehicleHandlers.Employees
             }
 
             HandlerAssignment candidate = configuration.CreateAssignment(HandlerGuid);
-            HandlerValidationResult validation = HandlerRuntimeServices.AssignmentResolver.Validate(candidate);
+            HandlerValidationResult validation = HandlerRuntimeServices.AssignmentResolver.ValidateForRegistration(candidate);
             if (!validation.IsValid)
             {
                 return validation;
@@ -69,6 +69,39 @@ namespace VehicleHandlers.Employees
             Configuration = configuration;
             Assignment = registered;
             TransitionTo(configuration.Enabled ? HandlerState.Idle : HandlerState.Unconfigured);
+            return HandlerValidationResult.Success();
+        }
+
+        public HandlerValidationResult TryRestoreAssignment(HandlerAssignment savedAssignment)
+        {
+            if (savedAssignment == null)
+            {
+                return HandlerValidationResult.Failure(HandlerValidationCode.MissingHandler, "Saved assignment data is missing.");
+            }
+
+            HandlerConfiguration restoredConfiguration = new HandlerConfiguration
+            {
+                VehicleGuid = savedAssignment.VehicleGuid,
+                DestinationPropertyCode = savedAssignment.DestinationPropertyCode,
+                DestinationPropertyGuid = savedAssignment.DestinationPropertyGuid,
+                DestinationDockIndex = savedAssignment.DestinationDockIndex,
+                Enabled = savedAssignment.Enabled,
+                ManualHidden = savedAssignment.ManualHidden
+            };
+
+            HandlerValidationResult result = TryApplyConfiguration(restoredConfiguration);
+            if (!result.IsValid)
+            {
+                return result;
+            }
+
+            Assignment.LastSafeVehicleState = savedAssignment.LastSafeVehicleState?.Clone();
+            Assignment.RemainingTripMinutes = 0;
+            if (savedAssignment.ManualHidden && Assignment.Enabled && State == HandlerState.Idle)
+            {
+                TransitionTo(HandlerState.Hidden);
+            }
+
             return HandlerValidationResult.Success();
         }
 
