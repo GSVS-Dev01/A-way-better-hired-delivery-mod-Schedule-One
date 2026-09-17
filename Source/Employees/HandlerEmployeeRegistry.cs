@@ -32,14 +32,50 @@ namespace VehicleHandlers.Employees
 
         public void ApplyConfiguration(HandlerConfiguration configuration)
         {
-            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            Assignment = configuration.CreateAssignment(HandlerGuid);
+            HandlerValidationResult result = TryApplyConfiguration(configuration);
+            if (!result.IsValid)
+            {
+                throw new InvalidOperationException(result.Message);
+            }
+        }
+
+        public HandlerValidationResult TryApplyConfiguration(HandlerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            if (State == HandlerState.Moving || State == HandlerState.Completing)
+            {
+                return HandlerValidationResult.Failure(
+                    HandlerValidationCode.MovementInProgress,
+                    "The Handler assignment cannot be changed while its vehicle is moving.");
+            }
+
+            HandlerAssignment candidate = configuration.CreateAssignment(HandlerGuid);
+            HandlerValidationResult validation = HandlerRuntimeServices.AssignmentResolver.Validate(candidate);
+            if (!validation.IsValid)
+            {
+                return validation;
+            }
+
+            HandlerValidationResult registration = HandlerRuntimeServices.Assignments.TryAssign(candidate, out HandlerAssignment registered);
+            if (!registration.IsValid)
+            {
+                return registration;
+            }
+
+            Configuration = configuration;
+            Assignment = registered;
             TransitionTo(configuration.Enabled ? HandlerState.Idle : HandlerState.Unconfigured);
+            return HandlerValidationResult.Success();
         }
 
         public void ResetConfiguration()
         {
             ReleaseReservation();
+            HandlerRuntimeServices.Assignments.RemoveByHandler(HandlerGuid);
             if (State != HandlerState.Unconfigured && State != HandlerState.Idle && State != HandlerState.Faulted)
             {
                 TransitionTo(HandlerState.Faulted);
@@ -122,6 +158,7 @@ namespace VehicleHandlers.Employees
         {
             CanWorkNow = false;
             ReleaseReservation();
+            HandlerRuntimeServices.Assignments.RemoveByHandler(HandlerGuid);
             if (State != HandlerState.Faulted && State != HandlerState.Unconfigured)
             {
                 if (HandlerStateMachine.CanTransition(State, HandlerState.Faulted))

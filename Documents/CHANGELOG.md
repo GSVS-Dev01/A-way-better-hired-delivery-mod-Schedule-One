@@ -16,4 +16,6 @@ Format follows Keep a Changelog. The project uses semantic versioning after the 
 - Transient server-decoded hire discriminator that never changes saved employee IDs or converts ordinary Packagers.
 - Base `Employee.CanWork` gating and validation-driven Handler waiting/idle/fault state transitions.
 - Owner-specific reservation cleanup across reset, unassignment, firing, destruction, leave/despawn, and unload.
+- Atomic Handler/vehicle assignment indexes with duplicate-claim prevention and defensive snapshots.
+- Existing-object assignment resolution for owned vehicles, supported properties, exact loading bays, occupants, and reservations.
 

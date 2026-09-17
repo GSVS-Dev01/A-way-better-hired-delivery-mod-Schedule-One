@@ -1,15 +1,15 @@
 # Current Handover
 
-## Active claim
+## Completed claim
 
-- Backlog: `VH-M2-003`
+- Backlog: `VH-M3-001`
 - Owner: Codex
-- Branch: `feat/vh-m2-003-handler-lifecycle`
+- Branch: `feat/vh-m3-001-handler-assignment`
 - Status: `DONE`
 
 ## Current outcome
 
-VH-M2-003 bridges exact base `Employee.CanWork` results into the Handler runtime, adds validation-driven work-start states, and centralizes the shared reservation service. Reset, unassignment, firing, marker destruction, leave/despawn, registry clear, and mod unload release only reservations owned by that Handler while allowing base lifecycle methods to continue.
+The authoritative assignment layer is complete. It maintains atomic indexes by Handler GUID and owned-vehicle GUID, rejects duplicate vehicle claims, resolves only existing player-owned vehicles, resolves only owned supported properties, validates exact loading-bay indexes and occupancy, and returns defensive assignment snapshots. Reconfiguration is refused during `Moving` or `Completing` states.
 
 ## Compatibility target
 
@@ -34,6 +34,9 @@ Game references remain outside this repository.
 - Static source check confirms no vehicle spawn API is used.
 - Managed marker tests pass for custom-role encode/decode and prove an unmarked employee ID remains unchanged.
 - Reservation invariant tests pass for idempotent owner acquisition, conflict rejection, and owner-only release.
+- Assignment registry tests pass for duplicate vehicle rejection, atomic reassignment, old-index release, and defensive lookup copies.
+- Assignment resolution uses existing `VehicleManager.PlayerOwnedVehicles` and `Property.OwnedProperties` collections only; no vehicle spawn or instantiation path exists in source.
+- VH-M3-001 DLL SHA-256: `9E33B8DD72548FE898059B9491D9DE1F08595D27D35CF3C2258A0D535FF5ACDF`
 - In-game Fixer dialogue, payment, networking, conversion, and appearance verification remains part of the isolated M5 runtime matrix.
 
 Commands:
@@ -45,6 +48,6 @@ Commands:
 
 ## Next work
 
-1. Review the stacked VH-M2-003 draft PR.
-2. Begin VH-M3-001 on a separate claimed branch using the frozen assignment model.
-3. Keep runtime in-game hiring/payment/fire/leave verification in the M5 isolated matrix.
+1. Claim `VH-M3-002` on a task-specific branch.
+2. Build the Handler clipboard panel against the frozen assignment contracts.
+3. Populate vehicle, supported property, and exact loading-bay selections from live owned objects.

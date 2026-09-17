@@ -33,6 +33,23 @@ namespace VehicleHandlers.Contracts
                 : DestinationPropertyGuid;
             return new HandlerBayKey(propertyKey, DestinationDockIndex);
         }
+
+        public HandlerAssignment Clone()
+        {
+            return new HandlerAssignment
+            {
+                HandlerGuid = HandlerGuid,
+                VehicleGuid = VehicleGuid,
+                DestinationPropertyCode = DestinationPropertyCode,
+                DestinationPropertyGuid = DestinationPropertyGuid,
+                DestinationDockIndex = DestinationDockIndex,
+                Enabled = Enabled,
+                ManualHidden = ManualHidden,
+                State = State,
+                RemainingTripMinutes = RemainingTripMinutes,
+                LastSafeVehicleState = LastSafeVehicleState?.Clone()
+            };
+        }
     }
 
     [Serializable]
@@ -47,6 +64,18 @@ namespace VehicleHandlers.Contracts
         public int LoadingDockIndex { get; set; } = -1;
 
         public bool WasVisible { get; set; } = true;
+
+        public HandlerVehicleSnapshot Clone()
+        {
+            return new HandlerVehicleSnapshot
+            {
+                PropertyCode = PropertyCode,
+                ParkingLotGuid = ParkingLotGuid,
+                ParkingSpotIndex = ParkingSpotIndex,
+                LoadingDockIndex = LoadingDockIndex,
+                WasVisible = WasVisible
+            };
+        }
     }
 
     [Serializable]
