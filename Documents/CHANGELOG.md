@@ -20,4 +20,6 @@ Format follows Keep a Changelog. The project uses semantic versioning after the 
 - Existing-object assignment resolution for owned vehicles, supported properties, exact loading bays, occupants, and reservations.
 - Handler-only base clipboard panel with live vehicle, property, and bay selectors, validation, enabled state, and reconfiguration controls.
 - Manual load and hide/release UI gateway for the M4 physical movement service, with vanilla Packager panels left unchanged.
+- Atomic, schema-versioned, save-slot-scoped Handler assignment persistence under `UserData/VehicleHandlers.json`.
+- Post-load GUID rebinding that reconverts only recorded Handler donors, preserves base home data, and drops stale records without spawning vehicles.
 
