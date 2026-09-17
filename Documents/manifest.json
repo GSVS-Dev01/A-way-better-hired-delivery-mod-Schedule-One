@@ -1,0 +1,10 @@
+{
+  "name": "Vehicle Handlers",
+  "version_number": "0.1.0",
+  "website_url": "https://github.com/xboxnuker-rgb/A-way-better-hired-delivery-mod-Schedule-One",
+  "description": "Adds a hireable Handler/Driver who moves owned vehicles between Schedule I properties while respecting loading-bay reservations.",
+  "dependencies": [
+    "LavaGang-MelonLoader-0.7.0"
+  ]
+}
+

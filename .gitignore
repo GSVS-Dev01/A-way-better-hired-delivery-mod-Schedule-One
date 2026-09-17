@@ -1,0 +1,18 @@
+[Bb]in/
+[Oo]bj/
+[Aa]rtifacts/
+.vs/
+*.user
+*.suo
+*.pdb
+*.zip
+*.log
+
+# Proprietary/local Schedule I dependencies and runtime data
+_ScheduleOneAssemblies/
+MelonLoader/
+Mods/
+UserData/
+.tools/
+local.build.props
+
