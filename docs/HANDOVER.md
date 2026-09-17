@@ -1,15 +1,15 @@
 # Current Handover
 
-## Active claim
+## Completed claim
 
 - Backlog: `VH-M3-001`
 - Owner: Codex
 - Branch: `feat/vh-m3-001-handler-assignment`
-- Status: `IN_PROGRESS`
+- Status: `DONE`
 
 ## Current outcome
 
-Implement the authoritative one-Handler/one-owned-vehicle assignment registry, stable property/bay resolution, allowed-destination validation, duplicate vehicle rejection, and last-safe-state model used by UI, persistence, and movement work.
+The authoritative assignment layer is complete. It maintains atomic indexes by Handler GUID and owned-vehicle GUID, rejects duplicate vehicle claims, resolves only existing player-owned vehicles, resolves only owned supported properties, validates exact loading-bay indexes and occupancy, and returns defensive assignment snapshots. Reconfiguration is refused during `Moving` or `Completing` states.
 
 ## Compatibility target
 
@@ -34,6 +34,9 @@ Game references remain outside this repository.
 - Static source check confirms no vehicle spawn API is used.
 - Managed marker tests pass for custom-role encode/decode and prove an unmarked employee ID remains unchanged.
 - Reservation invariant tests pass for idempotent owner acquisition, conflict rejection, and owner-only release.
+- Assignment registry tests pass for duplicate vehicle rejection, atomic reassignment, old-index release, and defensive lookup copies.
+- Assignment resolution uses existing `VehicleManager.PlayerOwnedVehicles` and `Property.OwnedProperties` collections only; no vehicle spawn or instantiation path exists in source.
+- VH-M3-001 DLL SHA-256: `9E33B8DD72548FE898059B9491D9DE1F08595D27D35CF3C2258A0D535FF5ACDF`
 - In-game Fixer dialogue, payment, networking, conversion, and appearance verification remains part of the isolated M5 runtime matrix.
 
 Commands:
@@ -45,6 +48,6 @@ Commands:
 
 ## Next work
 
-1. Add atomic Handler and vehicle assignment indexes.
-2. Resolve existing owned vehicles and properties by GUID/code without spawning replacements.
-3. Validate supported destination property, ownership, dock index, occupancy, and reservation conflicts.
+1. Claim `VH-M3-002` on a task-specific branch.
+2. Build the Handler clipboard panel against the frozen assignment contracts.
+3. Populate vehicle, supported property, and exact loading-bay selections from live owned objects.

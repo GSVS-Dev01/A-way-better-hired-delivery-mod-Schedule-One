@@ -30,7 +30,9 @@ The Handler runtime samples the exact base `Employee.CanWork()` result through a
 
 ### Assignment registry
 
-`HandlerAssignmentRegistry` owns versioned assignments keyed by Handler GUID. Each assignment records vehicle GUID, destination property code/GUID, dock index, enabled state, manual hidden state, and recoverable trip state.
+`HandlerAssignmentRegistry` owns versioned assignments keyed by normalized Handler GUID and maintains a second atomic index by normalized vehicle GUID. Each assignment records vehicle GUID, destination property code/GUID, dock index, enabled state, manual hidden state, and recoverable trip state. Registry reads return defensive clones, a Handler reassignment releases its old vehicle index, and another Handler cannot claim the same vehicle.
+
+`HandlerAssignmentResolver` binds configuration only to an existing entry in `VehicleManager.PlayerOwnedVehicles` and an existing entry in `Property.OwnedProperties`. It validates player ownership, vehicle occupancy, the supported property allow-list, exact dock bounds, physical dock occupants, and Handler reservation conflicts. It never creates a replacement vehicle. The Handler runtime validates and registers configuration as one operation and rejects changes while a trip is moving or completing.
 
 ### Reservation registry
 

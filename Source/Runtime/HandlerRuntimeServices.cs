@@ -1,3 +1,4 @@
+using VehicleHandlers.Assignments;
 using VehicleHandlers.Contracts;
 
 namespace VehicleHandlers.Runtime
@@ -6,9 +7,15 @@ namespace VehicleHandlers.Runtime
     {
         public static HandlerReservationRegistry Reservations { get; } = new HandlerReservationRegistry();
 
+        public static HandlerAssignmentRegistry Assignments { get; } = new HandlerAssignmentRegistry();
+
+        public static HandlerAssignmentResolver AssignmentResolver { get; } =
+            new HandlerAssignmentResolver(Assignments, Reservations);
+
         public static void Clear()
         {
             Reservations.Clear();
+            Assignments.Clear();
         }
     }
 }
