@@ -133,7 +133,33 @@ try {
     Assert-Method "Il2CppScheduleOne.NPCs.Behaviour.Behaviour" "Disable"
     Assert-Method "Il2CppScheduleOne.Management.EntityConfiguration" "Reset"
     Assert-Method "Il2CppScheduleOne.Dialogue.DialogueController_Fixer" "Confirm"
+    Assert-Method "Il2CppScheduleOne.Dialogue.DialogueController_Fixer" "ChoiceCallback" @("System.String")
+    Assert-Method -TypeName "Il2CppScheduleOne.Dialogue.DialogueController_Fixer" -MethodName "CheckChoice" -ParameterTypes @(
+        "System.String", "System.String&"
+    ) -ReturnType "System.Boolean"
+    Assert-Method "Il2CppScheduleOne.Dialogue.DialogueController_Fixer" "ModifyChoiceList" @(
+        "System.String", 'Il2CppSystem.Collections.Generic.List`1<Il2CppScheduleOne.Dialogue.DialogueChoiceData>&'
+    )
+    Assert-Method -TypeName "Il2CppScheduleOne.Dialogue.DialogueController_Fixer" -MethodName "ModifyDialogueText" -ParameterTypes @(
+        "System.String", "System.String"
+    ) -ReturnType "System.String"
     Assert-Property "Il2CppScheduleOne.Dialogue.DialogueController_Fixer" "selectedEmployeeType" "Il2CppScheduleOne.Employees.EEmployeeType"
+    Assert-Property "Il2CppScheduleOne.Dialogue.DialogueChoiceData" "Guid" "System.String"
+    Assert-Property "Il2CppScheduleOne.Dialogue.DialogueChoiceData" "ChoiceText" "System.String"
+    Assert-Property "Il2CppScheduleOne.Dialogue.DialogueChoiceData" "ChoiceLabel" "System.String"
+    Assert-Property "Il2CppScheduleOne.Dialogue.DialogueChoiceData" "ShowWorldspaceDialogue" "System.Boolean"
+    Assert-Method "Il2CppScheduleOne.Employees.EmployeeManager" "RpcLogic___CreateEmployee_311954683" @(
+        "Il2CppScheduleOne.Property.Property",
+        "Il2CppScheduleOne.Employees.EEmployeeType",
+        "System.String",
+        "System.String",
+        "System.String",
+        "System.Boolean",
+        "System.Int32",
+        "UnityEngine.Vector3",
+        "UnityEngine.Quaternion",
+        "System.String"
+    )
     Assert-Property "Il2CppScheduleOne.Management.IConfigurable" "Configuration" "Il2CppScheduleOne.Management.EntityConfiguration"
     Assert-Property "Il2CppScheduleOne.Management.IConfigurable" "ConfigurableType" "Il2CppScheduleOne.Management.EConfigurableType"
     Assert-Property "Il2CppScheduleOne.Management.IConfigurable" "CanBeSelected" "System.Boolean"
