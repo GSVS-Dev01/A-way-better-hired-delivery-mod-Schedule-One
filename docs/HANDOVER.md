@@ -2,14 +2,14 @@
 
 ## Active claim
 
-- Backlog: `VH-M1-001`, `VH-M1-002`
+- Backlog: `VH-M2-001`
 - Owner: Codex
-- Branch: `feat/vh-m1-001-api-verification`
+- Branch: `feat/vh-m2-001-handler-employee`
 - Status: `DONE`
 
 ## Current outcome
 
-The exact f13 compatibility verifier now covers the hiring, employee lifecycle, management clipboard, property, vehicle, parking, loading-dock, delivery reservation, game-time, save/load, and NPC vehicle surfaces required by the planned implementation. Shared assignment, state, validation, reservation, recovery, and persistence contracts are frozen for M2, M3, and M4.
+VH-M2-001 now provides an injected `HandlerEmployee` marker, explicit donor conversion factory, managed Handler runtime/state controller, guarded role-behaviour replacement, and per-instance teal appearance recolouring. Conversion preserves the original networked/saved employee object and does not alter unmarked base Handlers/Packagers.
 
 ## Compatibility target
 
@@ -26,9 +26,11 @@ Game references remain outside this repository.
 - Compatibility hash confirmed from the existing out-of-tree reference set.
 - Exact API verification passed against the target assembly hash.
 - Return types are checked in addition to exact type, method, property, and parameter identities.
+- Exact verification now includes every VH-M2-001 Harmony target, donor role behaviour, and donor configuration reset surface.
 - Release build completed with zero warnings and zero errors.
-- M1 verification DLL SHA-256: `0E599969A51E1620615EDA19D003ABA3B213617987A42CE704B356C55E83C93B`
-- Runtime gameplay verification remains deferred until the implementation milestones.
+- VH-M2-001 DLL SHA-256: `E2FBA5FC837FADB1C4FCC35D5823DF6D9B49523BA480B0F9CBB1160A9720FDDC`
+- Static source check confirms no vehicle spawn API is used.
+- In-game conversion/appearance verification remains part of the isolated M5 runtime matrix after hiring integration can create the worker.
 
 Commands:
 
@@ -39,6 +41,6 @@ Commands:
 
 ## Next work
 
-1. Review and merge the repository-foundation draft PR.
-2. Review the stacked M1 contracts/API-verification draft PR.
-3. Begin M2, M3, and M4 on separate claimed branches using `docs/INTERNAL_CONTRACTS.md` as their shared boundary.
+1. Review the stacked VH-M2-001 draft PR.
+2. Claim VH-M2-002 and wire the explicit Handler/Driver selection into the base Fixer hiring flow.
+3. Ensure only that new selection invokes `HandlerEmployeeFactory.ConvertDonor`; ordinary base Handler/Packager hires must remain unmarked.
