@@ -12,7 +12,7 @@ Valid states: `READY`, `IN_PROGRESS`, `BLOCKED`, `VERIFYING`, `DONE`.
 | VH-M2-002 | M2 | DONE | Codex | Base hiring integration. |
 | VH-M2-003 | M2 | DONE | Codex | Work lifecycle and leave/despawn behavior. |
 | VH-M3-001 | M3 | DONE | Codex | One-vehicle assignment model. |
-| VH-M3-002 | M3 | READY | — | Clipboard configuration and controls. |
+| VH-M3-002 | M3 | IN_PROGRESS | Codex | Clipboard configuration and controls. |
 | VH-M3-003 | M3 | READY | — | Versioned assignment persistence. |
 | VH-M4-001 | M4 | READY | — | Server-authoritative bay reservation registry. |
 | VH-M4-002 | M4 | READY | — | Timed physical vehicle state transitions. |

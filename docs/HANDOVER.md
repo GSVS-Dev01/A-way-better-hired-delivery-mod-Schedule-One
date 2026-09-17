@@ -1,15 +1,15 @@
 # Current Handover
 
-## Completed claim
+## Active claim
 
-- Backlog: `VH-M3-001`
+- Backlog: `VH-M3-002`
 - Owner: Codex
-- Branch: `feat/vh-m3-001-handler-assignment`
-- Status: `DONE`
+- Branch: `feat/vh-m3-002-handler-configuration`
+- Status: `IN_PROGRESS`
 
 ## Current outcome
 
-The authoritative assignment layer is complete. It maintains atomic indexes by Handler GUID and owned-vehicle GUID, rejects duplicate vehicle claims, resolves only existing player-owned vehicles, resolves only owned supported properties, validates exact loading-bay indexes and occupancy, and returns defensive assignment snapshots. Reconfiguration is refused during `Moving` or `Completing` states.
+Build a Handler management panel reachable through the base clipboard selection flow. Populate live owned-vehicle and supported-property choices, refresh exact loading-bay choices when the property changes, surface contract validation messages, and expose apply/reconfigure plus manual load/hide requests without duplicating movement logic.
 
 ## Compatibility target
 
@@ -48,6 +48,6 @@ Commands:
 
 ## Next work
 
-1. Claim `VH-M3-002` on a task-specific branch.
-2. Build the Handler clipboard panel against the frozen assignment contracts.
-3. Populate vehicle, supported property, and exact loading-bay selections from live owned objects.
+1. Map the existing `IConfigurable`, configuration, panel, selector, and clipboard APIs.
+2. Attach a Handler-specific configurable adapter without altering vanilla Packagers.
+3. Build and validate the live vehicle/property/bay controls and action requests.
