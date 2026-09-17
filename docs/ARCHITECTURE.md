@@ -22,6 +22,12 @@ The Fixer choice list receives a distinct `Vehicle Handler (Driver)` entry only 
 
 Because FishNet serializes only the existing `EEmployeeType`, the selected custom role is carried in a namespaced marker prepended to the outbound employee ID. The server RPC strips that marker before calling `CreateEmployee_Server`; it is never assigned to the NPC or persisted. A thread-scoped conversion flag then converts only that returned donor. Unmarked Handler/Packager requests and save-loader calls cannot consume the custom conversion path.
 
+### Employee lifecycle bridge
+
+The Handler runtime samples the exact base `Employee.CanWork()` result through a Harmony reverse patch. Work-hour, bed, payment, firing, and other vanilla availability rules therefore gate Handler work without duplicating their balance logic. `TryBeginWork` applies the frozen validation codes to `WaitingForVehicle`, `WaitingForDestinationBay`, `Idle`, or `Faulted`; M4 owns the later `Moving` and `Completing` transitions.
+
+`HandlerRuntimeServices.Reservations` is the single shared reservation service. Handler reset/unassignment, `Packager.Fire`, `Employee.LeavePropertyAndDespawn`, marker destruction, registry clear, and mod unload all release by Handler owner GUID. The original base fire and leave/despawn methods still execute.
+
 ### Assignment registry
 
 `HandlerAssignmentRegistry` owns versioned assignments keyed by Handler GUID. Each assignment records vehicle GUID, destination property code/GUID, dock index, enabled state, manual hidden state, and recoverable trip state.

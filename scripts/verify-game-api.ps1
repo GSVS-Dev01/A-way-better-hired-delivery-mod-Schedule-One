@@ -126,6 +126,7 @@ try {
     Assert-Method -TypeName "Il2CppScheduleOne.Employees.Packager" -MethodName "ShouldIdle" -ReturnType "System.Boolean"
     Assert-Method "Il2CppScheduleOne.Employees.Packager" "ResetConfiguration"
     Assert-Method "Il2CppScheduleOne.Employees.Packager" "UnassignProperty"
+    Assert-Method "Il2CppScheduleOne.Employees.Packager" "Fire"
     Assert-Property "Il2CppScheduleOne.Employees.Packager" "PackagingBehaviour" "Il2CppScheduleOne.NPCs.Behaviour.PackagingStationBehaviour"
     Assert-Property "Il2CppScheduleOne.Employees.Packager" "BrickPressBehaviour" "Il2CppScheduleOne.NPCs.Behaviour.BrickPressBehaviour"
     Assert-Property "Il2CppScheduleOne.NPCs.Behaviour.Behaviour" "Enabled" "System.Boolean"

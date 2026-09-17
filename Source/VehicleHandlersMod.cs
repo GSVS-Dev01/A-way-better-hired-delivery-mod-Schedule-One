@@ -1,6 +1,7 @@
 using MelonLoader;
 using VehicleHandlers.Employees;
 using VehicleHandlers.Hiring;
+using VehicleHandlers.Runtime;
 
 namespace VehicleHandlers
 {
@@ -20,6 +21,7 @@ namespace VehicleHandlers
         {
             HandlerHireContext.Clear();
             HandlerEmployeeRegistry.Clear();
+            HandlerRuntimeServices.Clear();
         }
     }
 }
