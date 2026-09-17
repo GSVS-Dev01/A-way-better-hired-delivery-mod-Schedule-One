@@ -2,14 +2,14 @@
 
 ## Active claim
 
-- Backlog: `VH-M2-001`
+- Backlog: `VH-M2-002`
 - Owner: Codex
-- Branch: `feat/vh-m2-001-handler-employee`
+- Branch: `feat/vh-m2-002-handler-hiring`
 - Status: `DONE`
 
 ## Current outcome
 
-VH-M2-001 now provides an injected `HandlerEmployee` marker, explicit donor conversion factory, managed Handler runtime/state controller, guarded role-behaviour replacement, and per-instance teal appearance recolouring. Conversion preserves the original networked/saved employee object and does not alter unmarked base Handlers/Packagers.
+VH-M2-002 adds a distinct `Vehicle Handler (Driver)` Fixer choice without replacing the vanilla Packager. It reuses normal choice validation, property capacity, Packager signing fee/daily wage, random employee creation, and FishNet RPC flow. A transient namespaced employee-ID marker is removed server-side before initialization/save and converts only the corresponding returned donor.
 
 ## Compatibility target
 
@@ -27,10 +27,12 @@ Game references remain outside this repository.
 - Exact API verification passed against the target assembly hash.
 - Return types are checked in addition to exact type, method, property, and parameter identities.
 - Exact verification now includes every VH-M2-001 Harmony target, donor role behaviour, and donor configuration reset surface.
+- Exact verification now includes Fixer choice/callback/text methods, dynamic choice fields, and the employee RPC logic method used by VH-M2-002.
 - Release build completed with zero warnings and zero errors.
-- VH-M2-001 DLL SHA-256: `E2FBA5FC837FADB1C4FCC35D5823DF6D9B49523BA480B0F9CBB1160A9720FDDC`
+- VH-M2-002 DLL SHA-256: `AF5D1BC4ABDF839A4EBCB15AC3BDEFDC6F049C4CDC1D065AFED37CC8564050D7`
 - Static source check confirms no vehicle spawn API is used.
-- In-game conversion/appearance verification remains part of the isolated M5 runtime matrix after hiring integration can create the worker.
+- Managed marker tests pass for custom-role encode/decode and prove an unmarked employee ID remains unchanged.
+- In-game Fixer dialogue, payment, networking, conversion, and appearance verification remains part of the isolated M5 runtime matrix.
 
 Commands:
 
@@ -41,6 +43,6 @@ Commands:
 
 ## Next work
 
-1. Review the stacked VH-M2-001 draft PR.
-2. Claim VH-M2-002 and wire the explicit Handler/Driver selection into the base Fixer hiring flow.
-3. Ensure only that new selection invokes `HandlerEmployeeFactory.ConvertDonor`; ordinary base Handler/Packager hires must remain unmarked.
+1. Review the stacked VH-M2-002 draft PR.
+2. Claim VH-M2-003 and bind Handler work states, payment/work checks, firing, unassignment, leave/despawn, and reservation cleanup to the base employee lifecycle.
+3. Preserve the current rule that ordinary Packager hires and loaded Packagers remain unmarked.

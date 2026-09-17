@@ -16,6 +16,12 @@ In 0.4.6f13, `EmployeeManager.GetEmployeePrefab(EEmployeeType.Handler)` resolves
 
 The conversion keeps the original `Packager`/`Employee`/`NPC`/FishNet object as the networked and saved employee. Packaging, brick-press, and move-item role behaviours are disabled for marked instances. A Harmony reverse patch invokes the base `Employee.UpdateBehaviour` implementation so general employee lifecycle logic continues while `Packager.UpdateBehaviour` is bypassed. Handler-only configuration and state live in the managed runtime controller defined by the frozen contracts.
 
+### Hiring discriminator
+
+The Fixer choice list receives a distinct `Vehicle Handler (Driver)` entry only when the vanilla Packager choice is available. The dialogue continues through the vanilla Packager branch so property capacity, signing fee, wage source, random appearance, and employee creation remain base-game behavior.
+
+Because FishNet serializes only the existing `EEmployeeType`, the selected custom role is carried in a namespaced marker prepended to the outbound employee ID. The server RPC strips that marker before calling `CreateEmployee_Server`; it is never assigned to the NPC or persisted. A thread-scoped conversion flag then converts only that returned donor. Unmarked Handler/Packager requests and save-loader calls cannot consume the custom conversion path.
+
 ### Assignment registry
 
 `HandlerAssignmentRegistry` owns versioned assignments keyed by Handler GUID. Each assignment records vehicle GUID, destination property code/GUID, dock index, enabled state, manual hidden state, and recoverable trip state.

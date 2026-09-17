@@ -1,5 +1,6 @@
 using MelonLoader;
 using VehicleHandlers.Employees;
+using VehicleHandlers.Hiring;
 
 namespace VehicleHandlers
 {
@@ -17,6 +18,7 @@ namespace VehicleHandlers
 
         public override void OnDeinitializeMelon()
         {
+            HandlerHireContext.Clear();
             HandlerEmployeeRegistry.Clear();
         }
     }
