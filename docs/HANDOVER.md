@@ -1,15 +1,15 @@
 # Current Handover
 
-## Completed claim
+## Active claim
 
-- Backlog: `VH-M3-002`
+- Backlog: `VH-M3-003`
 - Owner: Codex
-- Branch: `feat/vh-m3-002-handler-configuration`
-- Status: `DONE`
+- Branch: `feat/vh-m3-003-handler-persistence`
+- Status: `IN_PROGRESS`
 
 ## Current outcome
 
-The base clipboard's Packager panel is adapted only when every selected configuration belongs to an explicitly marked Handler. The normal bed field remains active; Packager station/route controls are replaced with owned-vehicle, supported-property, exact loading-bay, enabled-state, apply/reconfigure, refresh, load, hide/release, and validation controls. Vanilla Packagers always retain their original panel.
+Persist versioned Handler assignments under `UserData/VehicleHandlers.json`, write through normal SaveManager operations, and rebind only to existing marked Handlers, vehicles, owned properties, and loading bays after load stabilization. Stale or invalid records must fail closed and release reservations without spawning replacements.
 
 ## Compatibility target
 
@@ -53,6 +53,6 @@ Commands:
 
 ## Next work
 
-1. Claim `VH-M3-003` on a task-specific branch.
-2. Persist versioned assignment records under `UserData/VehicleHandlers.json` during normal saves.
-3. Rebind existing Handler, vehicle, property, and bay identities after load without spawning replacements.
+1. Map the exact load-completion hook and game-save identity surface.
+2. Add atomic JSON read/write and schema validation.
+3. Queue records until marked Handler runtime objects exist, then validate and rebind safely.
