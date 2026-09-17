@@ -1,6 +1,7 @@
 using VehicleHandlers.Assignments;
 using VehicleHandlers.Configuration;
 using VehicleHandlers.Contracts;
+using VehicleHandlers.Movement;
 using VehicleHandlers.Reservations;
 
 namespace VehicleHandlers.Runtime
@@ -20,8 +21,12 @@ namespace VehicleHandlers.Runtime
         public static HandlerReservationCoordinator ReservationCoordinator { get; } =
             new HandlerReservationCoordinator(AssignmentResolver, Reservations);
 
+        public static HandlerMovementCoordinator MovementCoordinator { get; } =
+            new HandlerMovementCoordinator(AssignmentResolver, ReservationCoordinator);
+
         public static void Clear()
         {
+            MovementCoordinator.ClearAndRecover();
             Reservations.Clear();
             Assignments.Clear();
             ManualBayController = new UnavailableHandlerManualBayController();

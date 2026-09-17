@@ -225,6 +225,7 @@ try {
     Assert-Method -TypeName "Il2CppScheduleOne.Vehicles.LandVehicle" -MethodName "GetVehicleData" -ReturnType "Il2CppScheduleOne.Persistence.Datas.VehicleData"
     Assert-Method "Il2CppScheduleOne.Vehicles.LandVehicle" "ExitPark" @("System.Boolean")
     Assert-Property "Il2CppScheduleOne.Map.ParkingLot" "GUID" "Il2CppSystem.Guid"
+    Assert-Property "Il2CppScheduleOne.Map.ParkingLot" "ParkingSpots" 'Il2CppSystem.Collections.Generic.List`1<Il2CppScheduleOne.Map.ParkingSpot>'
     Assert-Property "Il2CppScheduleOne.Map.ParkingLot" "EntryPoint" "UnityEngine.Transform"
     Assert-Property "Il2CppScheduleOne.Map.ParkingLot" "HiddenVehicleAccessPoint" "UnityEngine.Transform"
     Assert-Method -TypeName "Il2CppScheduleOne.Map.ParkingLot" -MethodName "GetRandomFreeSpot" -ReturnType "Il2CppScheduleOne.Map.ParkingSpot"

@@ -42,7 +42,9 @@ A Harmony postfix combines vanilla availability with Handler reservations. It ne
 
 ### Movement coordinator
 
-`HandlerMovementCoordinator` validates an assignment, detaches the exact vehicle from its current dock or parking spot, advances a timed trip, waits for destination availability, aligns the vehicle to the dock, and restores normal visibility/physics.
+`HandlerMovementCoordinator` runs from the marked Handler's normal work tick. It structurally resolves the assignment, leaves an exact vehicle already occupying its target alone, obtains the destination reservation, and captures both a persisted `HandlerVehicleSnapshot` and live source dock/parking references. It then clears only occupant references that point to that same vehicle, hides it, disables obstacles/physics, and advances the trip using `TimeManager.GetTotalMinSum`.
+
+After one game minute, owner-scoped bay checks continue until vanilla availability is true. Placement uses the destination dock's free `ParkingSpot`, `LandVehicle.AlignTo`, `ParkingSpot.SetOccupant`, `LoadingDock.SetOccupant`, and `RefreshOccupant`, then restores visibility/obstacles while keeping the docked vehicle non-simulated. No vehicle constructor, prefab, spawn, or replacement API is used. Failure and lifecycle cancellation first try the original live parking spot/dock, then make the same vehicle visible and physical if a safe source occupant cannot be restored.
 
 ### Management UI
 
