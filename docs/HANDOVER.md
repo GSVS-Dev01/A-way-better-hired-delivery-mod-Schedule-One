@@ -2,14 +2,14 @@
 
 ## Active claim
 
-- Backlog: `VH-M2-002`
+- Backlog: `VH-M2-003`
 - Owner: Codex
-- Branch: `feat/vh-m2-002-handler-hiring`
-- Status: `DONE`
+- Branch: `feat/vh-m2-003-handler-lifecycle`
+- Status: `IN_PROGRESS`
 
 ## Current outcome
 
-VH-M2-002 adds a distinct `Vehicle Handler (Driver)` Fixer choice without replacing the vanilla Packager. It reuses normal choice validation, property capacity, Packager signing fee/daily wage, random employee creation, and FishNet RPC flow. A transient namespaced employee-ID marker is removed server-side before initialization/save and converts only the corresponding returned donor.
+Bind Handler state and work-start validation to base employee availability/payment behavior. Guarantee assignment and reservation cleanup on unassignment, firing, destruction, leave/despawn, and mod unload while retaining the base leave/despawn implementation.
 
 ## Compatibility target
 
@@ -43,6 +43,6 @@ Commands:
 
 ## Next work
 
-1. Review the stacked VH-M2-002 draft PR.
-2. Claim VH-M2-003 and bind Handler work states, payment/work checks, firing, unassignment, leave/despawn, and reservation cleanup to the base employee lifecycle.
-3. Preserve the current rule that ordinary Packager hires and loaded Packagers remain unmarked.
+1. Bridge exact `Employee.CanWork` results into the Handler runtime.
+2. Implement work-start validation-to-state mapping for vehicle and destination waits.
+3. Release owner reservations and clear runtime state at every employee lifecycle terminal path.
