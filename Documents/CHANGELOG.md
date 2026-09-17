@@ -22,4 +22,6 @@ Format follows Keep a Changelog. The project uses semantic versioning after the 
 - Manual load and hide/release UI gateway for the M4 physical movement service, with vanilla Packager panels left unchanged.
 - Atomic, schema-versioned, save-slot-scoped Handler assignment persistence under `UserData/VehicleHandlers.json`.
 - Post-load GUID rebinding that reconverts only recorded Handler donors, preserves base home data, and drops stale records without spawning vehicles.
+- Server-only Handler loading-bay reservation coordinator layered on the vanilla delivery availability result.
+- Owner-scoped availability checks that block standard deliveries and competing Handlers without overriding physical dock occupants.
 

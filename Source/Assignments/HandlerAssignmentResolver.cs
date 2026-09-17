@@ -57,6 +57,13 @@ namespace VehicleHandlers.Assignments
             return TryResolve(assignment, true, out resolved);
         }
 
+        public HandlerValidationResult TryResolveForRegistration(
+            HandlerAssignment assignment,
+            out ResolvedHandlerAssignment resolved)
+        {
+            return TryResolve(assignment, false, out resolved);
+        }
+
         private HandlerValidationResult TryResolve(
             HandlerAssignment assignment,
             bool requireAvailability,
