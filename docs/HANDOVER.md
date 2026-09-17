@@ -2,14 +2,14 @@
 
 ## Active claim
 
-- Backlog: `VH-M2-003`
+- Backlog: `VH-M3-001`
 - Owner: Codex
-- Branch: `feat/vh-m2-003-handler-lifecycle`
-- Status: `DONE`
+- Branch: `feat/vh-m3-001-handler-assignment`
+- Status: `IN_PROGRESS`
 
 ## Current outcome
 
-VH-M2-003 bridges exact base `Employee.CanWork` results into the Handler runtime, adds validation-driven work-start states, and centralizes the shared reservation service. Reset, unassignment, firing, marker destruction, leave/despawn, registry clear, and mod unload release only reservations owned by that Handler while allowing base lifecycle methods to continue.
+Implement the authoritative one-Handler/one-owned-vehicle assignment registry, stable property/bay resolution, allowed-destination validation, duplicate vehicle rejection, and last-safe-state model used by UI, persistence, and movement work.
 
 ## Compatibility target
 
@@ -45,6 +45,6 @@ Commands:
 
 ## Next work
 
-1. Review the stacked VH-M2-003 draft PR.
-2. Begin VH-M3-001 on a separate claimed branch using the frozen assignment model.
-3. Keep runtime in-game hiring/payment/fire/leave verification in the M5 isolated matrix.
+1. Add atomic Handler and vehicle assignment indexes.
+2. Resolve existing owned vehicles and properties by GUID/code without spawning replacements.
+3. Validate supported destination property, ownership, dock index, occupancy, and reservation conflicts.
